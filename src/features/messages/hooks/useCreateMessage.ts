@@ -13,14 +13,14 @@ export const useCreateMessage = () => {
     url: string,
     { arg }: { arg: FormValues }
   ): Promise<AxiosResponse<MessageType>> => {
-    const response = await axiosBase.post(url, {
-      arg: { input_text: arg.input_text },
-    })
+    console.log(arg)
+    const response = await axiosBase.post(url, arg)
     return response
   }
   const { data, trigger: askOpenAI } = useSWRMutation('/api/messages/', handler)
 
   const onSubmit = async (values: FormValues) => {
+    console.log(values)
     await askOpenAI({
       input_text: values.input_text,
     })

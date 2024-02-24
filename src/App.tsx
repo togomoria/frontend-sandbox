@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Box, Button, FormControl, TextareaAutosize } from '@mui/material'
-import { useForm } from 'react-hook-form'
+import { Box, Button, TextareaAutosize } from '@mui/material'
+import { Controller, useForm } from 'react-hook-form'
 import z from 'zod'
 
 import { useCreateMessage } from './features/messages/hooks/useCreateMessage'
@@ -19,14 +19,20 @@ export const App: React.FC = () => {
   return (
     <Box>
       <form>
-        <FormControl {...control}>
-          <TextareaAutosize
-            minRows={5}
-            style={{
-              width: '100%',
-            }}
-          />
-        </FormControl>
+        <Controller
+          name="input_text"
+          control={control}
+          render={({ field }) => (
+            <TextareaAutosize
+              {...field}
+              minRows={5}
+              style={{
+                width: '100%',
+              }}
+              name="input_text"
+            />
+          )}
+        />
         <Box width="100%" display="flex">
           <Button
             variant="contained"
