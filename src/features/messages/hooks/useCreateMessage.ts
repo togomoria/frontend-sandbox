@@ -1,7 +1,6 @@
-import { axiosBase } from 'src/config/axiosConfig'
+import { post } from 'src/config/axiosConfig'
 import useSWRMutation from 'swr/mutation'
 
-import type { AxiosResponse } from 'axios'
 import type { FormValues } from 'src/App'
 
 type MessageType = {
@@ -9,18 +8,13 @@ type MessageType = {
 }
 
 export const useCreateMessage = () => {
-  const handler = async (
-    url: string,
-    { arg }: { arg: FormValues }
-  ): Promise<AxiosResponse<MessageType>> => {
-    console.log(arg)
-    const response = await axiosBase.post(url, arg)
-    return response
-  }
-  const { data, trigger: askOpenAI } = useSWRMutation('/api/messages/', handler)
+  const {
+    data,
+    trigger: askOpenAI,
+    isMutating,
+  } = useSWRMutation('/api/messages/', post<FormValues, MessageType>)
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
     await askOpenAI({
       input_text: values.input_text,
     })
@@ -29,5 +23,6 @@ export const useCreateMessage = () => {
   return {
     onSubmit,
     message: data?.data.data || '',
+    loading: isMutating,
   }
 }
