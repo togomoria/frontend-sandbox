@@ -1,6 +1,12 @@
 import React from 'react'
 
-import { Box, Button, TextareaAutosize, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextareaAutosize,
+  Typography,
+} from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -57,16 +63,21 @@ export const App: React.FC = () => {
             }}
             onClick={handleSubmit(onSubmit)}
             disabled={loading}
+            startIcon={loading && <CircularProgress size={20} />}
           >
             送信
           </Button>
         </Box>
       </form>
-      {message && (
-        <>
-          <Typography variant="subtitle1" marginRight="auto">
-            要約結果
-          </Typography>
+      <Typography variant="subtitle1" marginRight="auto">
+        要約結果
+      </Typography>
+      {loading ? (
+        <Box marginTop="20px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        message && (
           <Typography
             variant="caption"
             whiteSpace="pre-wrap"
@@ -74,7 +85,7 @@ export const App: React.FC = () => {
           >
             {message}
           </Typography>
-        </>
+        )
       )}
     </Box>
   )
